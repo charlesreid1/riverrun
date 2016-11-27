@@ -8,7 +8,6 @@ import io
 from olipy.markov import MarkovGenerator
 
 
-#DASH = u"\xe2\x80\x94"
 DASH = u"\u2014"
 has_dash = re.compile(DASH)
 
@@ -72,7 +71,7 @@ for ii,text_file in enumerate(text_files):
             sentence = list(generator.assemble())
 
             letter_and_a_line = re.compile(r'^ {0,}[a-zA-Z]\n$')
-            comma_and_a_space = re.compile(r'[a-zA-Z] ,')
+            comma_and_a_space = re.compile(r'[a-zA-Z] {1,},')
             excl_and_a_space = re.compile(r' !')
 
             # Examine each word in the new sentence
@@ -90,7 +89,7 @@ for ii,text_file in enumerate(text_files):
 
                 # Fix "stuff ," spacing
                 if( comma_and_a_space.search(s) ):
-                    sentence[cs] = re.sub(" ,", ",", s)
+                    sentence[cs] = re.sub(" {1,},", ",", s)
 
                 # Fix "stuff !" spacing
                 if( excl_and_a_space.search(s) ):
