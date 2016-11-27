@@ -8,7 +8,8 @@ import io
 from olipy.markov import MarkovGenerator
 
 
-DASH = "\xe2\x80\x94"
+#DASH = u"\xe2\x80\x94"
+DASH = u"\u2014"
 has_dash = re.compile(DASH)
 
 episode_names = [ "Telemachus",
@@ -44,23 +45,22 @@ money = []
 
 for ii,text_file in enumerate(text_files):
 
-    if(ii>3):
+    if(ii>5):
         break
 
-    money.append("\n\n")
-    money.append( " [ %02d %s ]"%(ii+1, episode_names[ii]) )
-    money.append("\n\n")
+    money.append(u"\n\n")
+    money.append(u" [ %02d %s ]"%(ii+1, episode_names[ii]) )
+    money.append(u"\n\n")
 
 
     #############################################
     # Fixed markov generator
 
-    with open(text_file,'r') as f:
-        generator = MarkovGenerator.loadlines(f, order=3, max=500)
+    with io.open(text_file, 'r', encoding="utf-8") as f:
+        generator = MarkovGenerator.loadlines(f, order=2, max=800)
 
 
-
-    how_many_paragraphs = 150#int(round(random.random()*80))
+    how_many_paragraphs = int(round(random.random()*150))
     how_many_sentences = 10
 
     for iip in range(how_many_paragraphs):
@@ -70,8 +70,6 @@ for ii,text_file in enumerate(text_files):
         for iis in range(how_many_sentences):
 
             sentence = list(generator.assemble())
-
-
 
             letter_and_a_line = re.compile(r'^ {0,}[a-zA-Z]\n$')
             comma_and_a_space = re.compile(r'[a-zA-Z] ,')
@@ -127,13 +125,18 @@ for ii,text_file in enumerate(text_files):
 
         # Add the string to the money list (what goes in the file)
         money.append(par)
-        money.append("\n")
-
+        money.append(u"\n")
 
 
 for m in money:
     m = m.strip() + "\n" 
 
-with open('markov_novel.txt','w') as f:
+#for m in money:
+#    print "------"
+#    print type(m)
+#    print [m]
+#    print "------"
+
+with io.open('markov_novel.txt','w', encoding='utf-8') as f:
     f.writelines(money)
 
