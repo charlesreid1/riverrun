@@ -51,25 +51,28 @@ for ii,data_file in enumerate(data_files):
     whitespace = re.compile("\s+")
     
     starts_with_letter = re.compile("^[a-zA-Z0-9].")
+    
+    contains_verse = re.compile("    ")
 
-    contains_verse = re.compile("      ")
-
-    how_many = int(round(random.random()*60))
+    how_many = int(round(random.random()*120))
     for i in range(how_many):
     
         sentences = []
 
-        for line, source in corpus.assemble("m.l", min_length=3):
+        for line, source in corpus.assemble("m.l", min_length=4):
 
+            #if no_punctuation_at_end.search(line):
+            #    if(data_file is '18penelope'):
+            #        line = line.strip() 
+            #    else:
+            #        line = line.strip() + "."
             if no_punctuation_at_end.search(line):
-                if(data_file is '18penelope'):
-                    line = line.strip() 
-                else:
-                    line = line.strip() + "."
-    
+                line = line + "."
+
             if contains_verse.search(line):
-                verses = line.split("     ")
-                verses = ["      "+v+"\n" for v in verses]
+                verses = line.split("    ")
+                verses = ["    "+v+"\n" for v in verses if v<>'']
+                sentences.append("\n")
                 for v in verses:
                     sentences.append(v)
 
