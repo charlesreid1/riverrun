@@ -1,6 +1,6 @@
 markov novel:
-- new line at dashes
-- capitalize beginning of sentences
+- new line at dashes. <-- in progress. for some reason, now, paragraphs ONLY start with dashes. sigh.
+- capitalize beginning of sentences 
 - add periods to end of lines
 
 queneau novel:
