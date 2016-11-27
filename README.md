@@ -2,6 +2,9 @@
 
 (NaNoGenMo 2016) Dense, incomprehensible Joycean tract that will keep the professors busy for centuries.
 
+**License:** Riverrun is released under an MIT License. 
+It utilizes the [Olipy](https://github.com/leonardr/olipy/blob/master/COPYING) library, which is released under the GNU Public License v3.
+
 ## Turning Text into Data
 
 **UlyssesTextToData.py**  - this script processes the Gutenberg Ulysses text 
