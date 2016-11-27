@@ -14,7 +14,7 @@ episode_names = [ "Telemachus",
         "Calypso",
         "LotusEaters",
         "Hades",
-        "Aeoleus",
+        "Aeolus",
         "Lestrygonians",
         "ScyllaCharybdis",
         "WanderingRocks",
@@ -23,7 +23,7 @@ episode_names = [ "Telemachus",
         "Nausicaa",
         "OxenOfTheSun",
         "Circe",
-        "Eumameus",
+        "Eumaeus",
         "Ithaca",
         "Penelope"]
 
@@ -31,21 +31,21 @@ episode_names = [ "Telemachus",
 
 data_files = []
 for i,e in enumerate(episode_names):
-    data_files.append("%02d%s"%(i,e.lower()))
+    data_files.append("data/%02d%s.dat"%(i+1,e.lower()))
 
 
 
 
 money = []
 
-for data_file in data_files:
+for ii,data_file in enumerate(data_files):
 
     money.append("\n\n")
-    money.append( " [ %s ]"%(data_file) )
+    money.append( " [ %02d %s ]"%(ii+1, episode_names[ii]) )
     money.append("\n\n")
 
 
-    corpus = Assembler.loadlines(open("data/" + data_file + ".dat"), tokens_in='par')
+    corpus = Assembler.loadlines(open(data_file))
     
     no_punctuation_at_end = re.compile("[a-zA-Z0-9]$")
     whitespace = re.compile("\s+")
