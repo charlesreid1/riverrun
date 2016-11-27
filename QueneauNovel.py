@@ -45,7 +45,7 @@ for ii,data_file in enumerate(data_files):
     money.append("\n\n")
 
 
-    corpus = Assembler.loadlines(open(data_file))
+    corpus = Assembler.loadlines(open(data_file),tokens_in='par')
     
     no_punctuation_at_end = re.compile("[a-zA-Z0-9]$")
     whitespace = re.compile("\s+")
@@ -59,7 +59,7 @@ for ii,data_file in enumerate(data_files):
     
         sentences = []
 
-        for line, source in corpus.assemble("m.l", min_length=12):
+        for line, source in corpus.assemble("m.l", min_length=3):
 
             if no_punctuation_at_end.search(line):
                 if(data_file is '18penelope'):
@@ -92,11 +92,8 @@ for ii,data_file in enumerate(data_files):
 
 
 
+money = [m.strip()+u"\n" for m in money]
 
-
-money = [m.strip()+"\n" for m in money]
-money = [m.encode('utf8') for m in money]
-
-with open('my_novel.txt','w') as f:
+with io.open('queneau_novel.txt','w',encoding='utf-8') as f:
     f.writelines(money)
 
