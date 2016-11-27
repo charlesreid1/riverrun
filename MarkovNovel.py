@@ -7,6 +7,10 @@ import io
 
 from olipy.markov import MarkovGenerator
 
+
+DASH = "\xe2\x80\x94"
+has_dash = re.compile(DASH)
+
 episode_names = [ "Telemachus",
         "Nestor",
         "Proteus",
@@ -32,86 +36,100 @@ for i,e in enumerate(episode_names):
     text_files.append("txt/%02d%s.txt"%(i+1,e.lower()))
 
 
+
+
 money = []
 
+
+
 for ii,text_file in enumerate(text_files):
+
+    if(ii>3):
+        break
 
     money.append("\n\n")
     money.append( " [ %02d %s ]"%(ii+1, episode_names[ii]) )
     money.append("\n\n")
 
+
+    #############################################
+    # Fixed markov generator
+
     with open(text_file,'r') as f:
-        generator = MarkovGenerator.loadlines(f, order=1, max=200)
+        generator = MarkovGenerator.loadlines(f, order=3, max=500)
 
 
 
-
-    dialogue = "\xe2\x80\x94"
-    has_dialogue = re.compile(dialogue)
-
-
-    spaces = "     "
-    has_spaces = re.compile(spaces)
-
-
-    how_many_paragraphs = int(round(random.random()*80))
-    how_many_sentences = int(round(random.random()*30))
+    how_many_paragraphs = 150#int(round(random.random()*80))
+    how_many_sentences = 10
 
     for iip in range(how_many_paragraphs):
 
-        sentences = []
+        par = ""
 
         for iis in range(how_many_sentences):
 
             sentence = list(generator.assemble())
-            sent = " ".join(sentence)
-
-            sentences.append(sent)
-
-        par = " ".join(sentences)
-
-        if( has_dialogue.search(par) ):
-            par = re.sub(dialogue, "\n"+dialogue, par)
-        if( has_spaces.search(par) ):
-            par = re.sub(spaces, "\n", par)
-
-        money.append( par )
 
 
 
+            letter_and_a_line = re.compile(r'^ {0,}[a-zA-Z]\n$')
+            comma_and_a_space = re.compile(r'[a-zA-Z] ,')
+            excl_and_a_space = re.compile(r' !')
+
+            # Examine each word in the new sentence
+            for cs,s in enumerate(sentence):
+
+                # Insert newline when there is a dialogue symbol
+                if( has_dash.search(s) ):
+                    d = has_dash.sub("\n"+DASH,s)
+                    sentence[cs] = d
+                    sentence[-1] = s[-1]+"\n"
+
+                # Replace single-letter oops words \n with just \n 
+                if( letter_and_a_line.search(s) ):
+                    del sentence[cs]
+
+                # Fix "stuff ," spacing
+                if( comma_and_a_space.search(s) ):
+                    sentence[cs] = re.sub(" ,", ",", s)
+
+                # Fix "stuff !" spacing
+                if( excl_and_a_space.search(s) ):
+                    sentence[cs] = re.sub(" !", "!", s)
+
+            # Capitalize first word of sentence
+            # (if contains dash, capitalize second word):
+            i = 0
+            if( has_dash.search(sentence[0]) ):
+                i = 1
+            try:
+                sentence[i] = sentence[i].capitalize()
+            except:
+                pass
 
 
-    ###no_punctuation_at_end = re.compile("[a-zA-Z0-9]$")
-    ###whitespace = re.compile("\s+")
-    ###
-    ###starts_with_letter = re.compile("^[a-zA-Z0-9].")
-
-    ###contains_verse = re.compile("      ")
-
-    ###how_many_paragraphs = int(round(random.random()*80))
-
-    ###how_many_sentences = int(round(random.random()*30))
-
-    ###for i in range(how_many_paragraphs):
-    ###
-    ###    sentences = []
-
-    ###    for sentence in range(how_many_sentences):
-    ###        
-    ###        for word in list(generator.assemble()):
-
-    ###            if no_punctuation_at_end.search(word):
-    ###                word = word.strip()
-
-    ###                sentences.append(word)
+            # Add period to end of sentence:
+            last_word = sentence[-1]
+            last_letter = last_word[-1]
+            if(last_letter<>"." and last_letter<>"?" 
+                    and last_letter<>":" and last_letter<>","
+                    and last_letter<>"!" and last_letter<>"\n"):
+                sentence[-1] = sentence[-1] + "."
 
 
-    ###    par = " ".join(sentences)
 
-    ###    if not starts_with_letter.search(par): 
-    ###        money.append("\n")
-    ###    
-    ###    money.append(par)
+
+            # Turn the Markov-generated paragraph into a string
+            par += " " 
+            par += " ".join(sentence)
+            par = par.strip()
+
+        # Add the string to the money list (what goes in the file)
+        money.append(par)
+        money.append("\n")
+
+
 
 for m in money:
     m = m.strip() + "\n" 
