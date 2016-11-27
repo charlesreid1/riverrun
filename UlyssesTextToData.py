@@ -1,5 +1,6 @@
 import json
 import re
+import io 
 
 chapter_names = ['telemachus',
         'nestor',
@@ -26,7 +27,7 @@ def std_chapter(n):
         datfile = "data/%02d%s.dat"%( n, chapter_names[n-1] )
 
     # Load lines from file into list
-    with open(txtfile,'r') as f:
+    with io.open(txtfile,'r',encoding='utf-8') as f:
         oldparagraphs = f.readlines()
 
 
@@ -42,7 +43,7 @@ def std_chapter(n):
 
 
     # Parse and output in json format 
-    with open(datfile,'w') as o:
+    with io.open(datfile,'w',encoding='utf-8') as o:
     
         print("Processing "+chapter_names[n-1])
 
@@ -72,13 +73,17 @@ def std_chapter(n):
                 d['par'] = sentences
     
                 # Dump dictionary to output file
-                json.dump(d, o)
-                o.write("\n")
+                #json.dump(d, o, encoding='utf-8', ensure_ascii=False)
+                result = json.dumps(d, encoding='utf-8')
+                o.write(result.decode('utf-8'))
+                o.write(u"\n")
 
     print("Done processing "+chapter_names[n-1])
     print("Input: "+txtfile)
     print("Output: "+datfile)
     print("\n")
+
+
 
 
 
@@ -91,7 +96,7 @@ def ch18():
     datfile = "data/%02d%s.dat"%( n, chapter_names[n-1] )
 
     # Load lines from file into list
-    with open(txtfile,'r') as f:
+    with io.open(txtfile,'r',encoding='utf-8') as f:
         oldparagraphs = f.readlines()
 
     paragraphs = []
@@ -105,7 +110,7 @@ def ch18():
 
 
     # Parse and output in json format 
-    with open(datfile,'w') as o:
+    with io.open(datfile,'w',encoding='utf-8') as o:
     
         print("Processing "+chapter_names[n-1])
 
@@ -122,8 +127,9 @@ def ch18():
             d['par'] = fragments
     
             # Dump dictionary to output file
-            json.dump(d, o)
-            o.write("\n")
+            result = json.dumps(d, encoding='utf-8')
+            o.write(result.decode('utf-8'))
+            o.write(u"\n")
 
     print("Done processing "+chapter_names[n-1])
     print("Input: "+txtfile)
@@ -135,9 +141,6 @@ def ch18():
 
 
 if __name__=="__main__":
-    for i in range(18):
-        if( (i+1) is 18 ):
-            ch18()
-        else:
-            std_chapter(i+1)
-
+    for i in range(17):
+        std_chapter(i+1)
+    ch18()
