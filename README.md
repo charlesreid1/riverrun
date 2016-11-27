@@ -22,3 +22,7 @@ Because the queneau generator uses the original novel as the corpus,
 it works much better when generating a finished product smaller than
 the original corpus.
 
+**MarkovNovel.py** - uses a Markov generator to create a new novel.
+This is much less sensible, has many more grammatical mistakes,
+but generates much more interesting content.
+
