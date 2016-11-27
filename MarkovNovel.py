@@ -43,6 +43,17 @@ for ii,text_file in enumerate(text_files):
     with open(text_file,'r') as f:
         generator = MarkovGenerator.loadlines(f, order=1, max=200)
 
+
+
+
+    dialogue = "\xe2\x80\x94"
+    has_dialogue = re.compile(dialogue)
+
+
+    spaces = "     "
+    has_spaces = re.compile(spaces)
+
+
     how_many_paragraphs = int(round(random.random()*80))
     how_many_sentences = int(round(random.random()*30))
 
@@ -57,24 +68,15 @@ for ii,text_file in enumerate(text_files):
 
             sentences.append(sent)
 
-        money.append(" ".join(sentences))
-        
-        money.append("\n")
+        par = " ".join(sentences)
 
+        if( has_dialogue.search(par) ):
+            par = re.sub(dialogue, "\n"+dialogue, par)
+        if( has_spaces.search(par) ):
+            par = re.sub(spaces, "\n", par)
 
+        money.append( par )
 
-
-    ### ###########################
-    ### # start over.
-
-    ### z = list(generator.assemble())
-
-    ### # Use this search,
-    ### # but if it's found,
-    ### # insert a new line.
-    ### print [re.sub("\xe2\x80\x94","-",zz) for zz in z]
-
-    ### ###no_punctuation_at_end = re.compile("[a-zA-Z0-9]$")
 
 
 
@@ -111,11 +113,9 @@ for ii,text_file in enumerate(text_files):
     ###    
     ###    money.append(par)
 
-
-money = [m.strip()+"\n" for m in money]
-#money = [m.encode('utf8') for m in money]
+for m in money:
+    m = m.strip() + "\n" 
 
 with open('markov_novel.txt','w') as f:
     f.writelines(money)
-
 
