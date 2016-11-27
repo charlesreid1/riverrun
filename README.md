@@ -26,3 +26,9 @@ the original corpus.
 This is much less sensible, has many more grammatical mistakes,
 but generates much more interesting content.
 
+## Turning a Novel into HTML
+
+**MakeHTML.py** - a very, very simple script to dump out the contents
+of a novel (in a Unicode text file) to an HTML file. This also correctly
+handles Unicode symbols and translates them into the corresponding HTML codes.
+
