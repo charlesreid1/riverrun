@@ -1,6 +1,8 @@
 # riverrun
 
-(NaNoGenMo 2016) Dense, incomprehensible Joycean tract that will keep the professors busy for centuries.
+Dense, incomprehensible Joycean tract that will keep the professors busy for centuries.
+
+A [NaNoGenMo 2016](https://github.com/NaNoGenMo/2016) project.
 
 **License:** Riverrun is released under an MIT License. 
 It utilizes the [Olipy](https://github.com/leonardr/olipy/blob/master/COPYING) library, which is released under the GNU Public License v3.
