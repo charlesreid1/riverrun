@@ -17,14 +17,17 @@ def main():
     print '</html>'
 
 def make_title():
+    print '<center>'
     print '<h1>Riverrun</h1>'
-    print '<h2>An automatically generated NaNoGenMo 2016 submission. Based on James Joyce\'s <u>Ulysses</u></h2>'
+    print '<p class="lead">An automatically generated NaNoGenMo 2016 submission. Based on James Joyce\'s <u>Ulysses</u></p>'
+    print '</center>'
     print '<p>&nbsp;</p>'
     print '<p>&nbsp;</p>'
 
 
 def make_toc(lines):
 
+    print '<center>'
     print '<h3>Table of Contents</h3>'
     print '<p>&nbsp;</p>'
     chapter = 1
@@ -34,6 +37,7 @@ def make_toc(lines):
             print '<p><a href="#' + str(chapter) + '">' + m.groups(0)[0] + '</a></p>'
             chapter += 1
 
+    print '</center>'
     print '<p>&nbsp;</p>'
     print '<p>&nbsp;</p>'
     print '<p>&nbsp;</p>'
